@@ -1,24 +1,19 @@
 import random
-# Welcome message
+
 print("Oh, yes... Paleblood...")
 input()
-print("Well, you've come to the right place.")
+print("You've come to the right place.")
 input()
 print("Yharnam is the home of blood ministration.")
 input()
-print("You need only unravel its mistery.")
-input()
-print("But, where's an outsider like you to begin.")
-input()
-print("Easy, with a bit of Yharnam blood of your own...")
-input()
 print("But first, you'll need a contract...")
 input()
+
 name = input("Name your character ---> ")
-print(f"Welcome " + name)
+print(f"Welcome, {name}.")
 
 past_choice = input("""
-Choose your past.
+Choose your past:
 
 [1] Milquetoast
 [2] Lone Survivor
@@ -30,122 +25,147 @@ Choose your past.
 [8] Cruel Fate
 [9] Waste of Skin
 """)
-#life choices
+
 if past_choice == "1":
-  print("Your Strength 12", "Your Health points 11")
-def __init__(self, name= "Milquetoast", base_health = 11, base_strength =  12):
- self.name=name
- self.strength = base_strength
+    base_strength, base_health = 12, 11
+elif past_choice == "2":
+    base_strength, base_health = 11, 14
+elif past_choice == "3":
+    base_strength, base_health = 12, 11
+elif past_choice == "4":
+    base_strength, base_health = 15, 12
+elif past_choice == "5":
+    base_strength, base_health = 9, 9
+elif past_choice == "6":
+    base_strength, base_health = 14, 10
+elif past_choice == "7":
+    base_strength, base_health = 9, 7
+elif past_choice == "8":
+    base_strength, base_health = 12, 11
+elif past_choice == "9":
+    base_strength, base_health = 10, 10
+else:
+    base_strength, base_health = 10, 10
 
-if past_choice == "2":
-  print("Your Strength 11", "Your Health points 14")
-def __init__(self, name="Lone Survivor", base_health = 14, base_strength = 11):
- self.name=name
- self.strength = base_strength
-
-if past_choice == "3":
-  print("Your Strength 12", "Your Health points 11")
-def __init__(self, name = "Troubled Childhood", base_health = 11, base_strength = 12):
- self.name=name
- self.strength = base_strength
-
-if past_choice == "4":
-  print("Your Strength 15", "Your Health points 12")
-def __init__(self, name = "Violent Past", base_health = 12, base_strength = 15):
- self.name=name
- self.strength = base_strength
-
-if past_choice == "5":
-  print("Your Strength 9", "Your Health points 9")
-def __init__(self, name = "Professional", base_health = 9, base_strength = 9):
- self.name=name
- self.strength = base_strength
-
-if past_choice == "6":
-  print("Your Strength 14", "Your Health points 10")
-def __init__(self,name= "Military Veteran", base_health = 10, base_strength = 14):
- self.name=name
- self.strength = base_strength
-
-if past_choice == "7":
-  print("Your Strength 9", "Your Health points 7")
-def __init__(self, name = "Noble Scion", base_health = 7, base_strength = 9):
- self.name=name
- self.strength = base_strength
-
-if past_choice == "8":
-  print("Your Strength 12", "Your Health points 11")
-def __init__(self, name = "Cruel Fate", base_health = 11, base_strength = 12):
- self.name=name
- self.strength = base_strength
-
-if past_choice == "9":
-  print("Your Strength 10", "Your Health points 10")
-def __init__(self, name = "Waste of Skin", base_health = 10, base_strength = 10, lvl=1):
- self.name=name
- self.strength = base_strength
- self.Health_points = hp = base_health
- self.lvl = lvl
-
-#class item
-class Item: 
- """Föremål som kan vara i spelarens inventory.
-  name:str
-  strength_bonus: int"""
- def __init__(self, name: str, strength: int=0, health: int=0):
-  self.name=name
-  self.strength = strength
-  self.health = health
-  def __str__(self):
-        return f"{self.name} (+{self.strength_bonus} (+{self.health})"
+print(f"STR: {base_strength} | HP: {base_health}")
 
 
-#player items
-Crusher =Item("Crusher",strength= 3)
-Sword =Item("Sword",strength= 1)
-Acid= Item("Acid",strength= 2)
-sou =Item("Sou ",strength= 3)
-Water_Gun=Item("Water Gun", strength=3)
-Intergalactic =Item("Intergalacticaldestroyerofeverything",strength= 7)
-Medkit= Item("Medkit",strength= 0, health=6)
-Blood_vials= Item("Blood vial", strength= 0, health= 7)
+def choose_door_prompt():
+    while True:
+        choice = input("\nChoose a door: [1] Left  [2] Forward  [3] Right > ")
+        if choice in ("1", "2", "3"):
+            return int(choice)
+        print("Invalid choice.")
 
-items = [Crusher, Sword, Acid, sou, Water_Gun, Intergalactic]
+class Item:
+    def __init__(self, name, strength=0, health=0):
+        self.name = name
+        self.strength = strength
+        self.health = health
 
-#Monster names
+    def __str__(self):
+        return f"{self.name} (+{self.strength} STR, +{self.health} HP)"
+
+
+class Player:
+    def __init__(self, name, base_strength, hp):
+        self.name = name
+        self.base_strength = base_strength
+        self.hp = hp
+        self.level = 1
+        self.inventory = []
+
+    def total_strength(self):
+        return self.base_strength + sum(item.strength for item in self.inventory)
+
+    def add_item(self, item):
+        self.inventory.append(item)
+        self.hp += item.health
+        print(f"You obtained {item}!")
+
+    def take_damage(self, dmg):
+        self.hp -= dmg
+
+    def level_up(self, n):
+        self.level += n
+
+    def is_alive(self):
+        return self.hp > 0
+
 
 class Monster:
-  def __init__(self, name, hp, strength):
-    self.name = name
-    self.hp = hp
-    self.strength = strength
+    def __init__(self, name, strength):
+        self.name = name
+        self.strength = strength
 
-    def dropitem(self):
-      if random.random() < 0.5:
-        return random.choice(items)
-      return None
-     
-#PLACEHOLDER HP OCH STRENGTH BYT OM NI VILL
-monsters = [
-  Monster("Scourge Beast", hp = 10, strength = 10),
-  Monster("Maneater Boar", hp = 10, strength = 10),
-  Monster("Brainsucker", hp = 10, strength = 10),
-  Monster("Winter lantern", hp = 10, strength = 10),
-  Monster("Church giant", hp = 10, strength = 10),
-  Monster("Hunter", hp = 10, strength = 10),
-  Monster("Celestial emisary", hp = 10, strength = 10),
-  Monster("Orphan of Kos", hp = 10, strength = 10),
-  Monster("One reborn", hp = 10, strength = 10),
-  Monster("Goblin", hp = 10, strength = 10)
+    def drop_item(self):
+        if random.random() < 0.5:
+            return random.choice(items)
+        return None
+
+
+items = [
+    Item("Sword", strength=1),
+    Item("Crusher", strength=3),
+    Item("Blood Vial", health=5),
+    Item("Hunter Axe", strength=2),
+    Item("Medkit", health=7)
 ]
-enemy = random.choice(monsters)
-print(f"A wild {enemy.name} appears! HP {enemy.hp}, STR {enemy.strength}")
 
-dropped = enemy.drop_item()
-if dropped:
-  print(f"it dropped a {dropped.name}")
-else:
-  print(f"it dropped nothing...")
- 
+monsters = [
+    Monster("Scourge Beast", 10),
+    Monster("Hunter", 9),
+    Monster("Brainsucker", 8),
+    Monster("Goblin", 6),
+    Monster("Church Giant", 12)
+]
 
-#CHESTICHESTIE
+
+def encounter(player):
+    monster = random.choice(monsters)
+
+    print(f"\nA {monster.name} appears!")
+    print(f"Monster STR: {monster.strength}")
+    print(f"Your STR: {player.total_strength()}")
+
+    if player.total_strength() > monster.strength:
+        print("You defeated the monster.")
+        player.level_up(1)
+
+        drop = monster.drop_item()
+        if drop:
+            player.add_item(drop)
+
+    elif player.total_strength() < monster.strength:
+        print("The monster was stronger...")
+        player.take_damage(1)
+
+    else:
+        print("It's a draw. Nothing happens.")
+
+    print(f"HP: {player.hp} | Level: {player.level}")
+
+player = Player(name, base_strength, base_health)
+
+print("\nThe hunt begins...")
+
+while player.is_alive():
+    door = choose_door_prompt()
+
+    
+    if door in (1, 2, 3):
+        if random.random() < 0.7:
+            encounter(player)
+        else:
+            loot = random.choice(items)
+            print("\nYou found loot behind the door.")
+            player.add_item(loot)
+
+    if player.level >= 10:
+        print("\nYou transcended the hunt.")
+        print("YOU WIN.")
+        break
+
+if not player.is_alive():
+    print("\nYou have fallen.")
+    print("GAME OVER.")
