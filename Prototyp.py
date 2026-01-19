@@ -1,10 +1,15 @@
 import random
-
 print("Oh, yes... Paleblood...")
 input()
-print("You've come to the right place.")
+print("Well, you've come to the right place.")
 input()
 print("Yharnam is the home of blood ministration.")
+input()
+print("You need only unravel its mistery.")
+input()
+print("But, where's an outsider like you to begin.")
+input()
+print("Easy, with a bit of Yharnam blood of your own...")
 input()
 print("But first, you'll need a contract...")
 input()
@@ -47,8 +52,7 @@ elif past_choice == "9":
 else:
     base_strength, base_health = 10, 10
 
-print(f"STR: {base_strength} | HP: {base_health}")
-
+print(f"Strenght: {base_strength} | Health: {base_health}")
 
 def choose_door_prompt():
     while True:
@@ -64,7 +68,7 @@ class Item:
         self.health = health
 
     def __str__(self):
-        return f"{self.name} (+{self.strength} STR, +{self.health} HP)"
+        return f"{self.name} (+{self.strength} Strength, +{self.health} Health)"
 
 
 class Player:
@@ -105,7 +109,7 @@ class Monster:
 
 
 items = [
-    Item("Sword", strength=1),
+    Item("Sword", strength=4),
     Item("Crusher", strength=3),
     Item("Blood Vial", health=5),
     Item("Hunter Axe", strength=2),
@@ -120,15 +124,15 @@ monsters = [
     Monster("Church Giant", 12)
 ]
 
-
 def encounter(player):
     monster = random.choice(monsters)
 
     print(f"\nA {monster.name} appears!")
-    print(f"Monster STR: {monster.strength}")
-    print(f"Your STR: {player.total_strength()}")
+    print(f"Monster Strength: {monster.strength}")
+    print(f"Your Strength: {player.total_strength()}")
 
     if player.total_strength() > monster.strength:
+        input()
         print("You defeated the monster.")
         player.level_up(1)
 
@@ -143,12 +147,14 @@ def encounter(player):
     else:
         print("It's a draw. Nothing happens.")
 
-    print(f"HP: {player.hp} | Level: {player.level}")
+    print(f"Health: {player.hp} | Level: {player.level}")
 
 player = Player(name, base_strength, base_health)
 
+input()
 print("\nThe hunt begins...")
 
+input()
 while player.is_alive():
     door = choose_door_prompt()
 
